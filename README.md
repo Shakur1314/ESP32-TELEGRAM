@@ -73,10 +73,10 @@ for (size_t n=0; n<fbLen; n=n+1024) {
 clientTCP.print(tail);
 Technical Reflections
 Why I used WiFiClientSecure
-I utilized WiFiClientSecure to ensure all data is encrypted via TLS. This prevents unauthorized interception of the surveillance feed during transit.
+I utilized WiFiClientSecure to ensure all data is encrypted via TLS (Transport Layer Security). This prevents unauthorized interception of the surveillance feed during transit.
 
 Buffer Management
-Handling image data on an IoT device requires careful memory management. I ensured esp_camera_fb_return(fb) was called immediately after transmission to free up the frame buffer and prevent Memory Allocation failures or brownouts.
+Handling image data on an IoT device requires careful memory management. I ensured esp_camera_fb_return(fb) was called immediately after transmission to free up the frame buffer and prevent memory allocation failures or brownouts.
 
 Real-World Application (SOC Perspective)
 As a BCC Cybersecurity graduate, I recognize that unsecured IoT devices are prime targets for lateral movement within a network. This lab highlights:
