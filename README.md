@@ -10,7 +10,7 @@ ESP32-CAM Telegram Bot: remote control via Telegram. Features: capture photos, t
 ##  Objective
 The goal of this project was to deploy a remote-controlled surveillance node using the **ESP32-CAM** and the **Telegram Bot API**. This lab demonstrates the implementation of remote command execution, manual HTTP POST request construction, and authorized access control in an IoT environment.
 
-## 🛠️ Tools Used
+##  Tools Used
 * **Hardware:** ESP32-CAM (AI-Thinker module), FTDI USB-to-TTL Programmer.
 * **Software/APIs:** Arduino IDE, Telegram Bot API, `UniversalTelegramBot` & `ArduinoJson` libraries.
 * **Protocols:** WiFi (WPA2), TLS/SSL (HTTPS).
