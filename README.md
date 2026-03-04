@@ -21,6 +21,7 @@ Technical Implementation
 To ensure the camera only interacts with an authorized user, I implemented a filter that checks the incoming chat_id.
 
 C++
+
 // Print the received message and handle logic
 String text = bot.messages[i].text;
 Serial.println(text);
@@ -46,6 +47,7 @@ if (text == "/photo") {
 Instead of relying solely on a high-level library, I handled the manual construction of the multipart HTTP POST request to send image data to Telegram's servers. This demonstrates an understanding of how data is chunked and transmitted over TCP.
 
 C++
+
 // Constructing the multipart/form-data request
 String head = "--RandomNerdTutorials\r\nContent-Disposition: form-data; name=\"chat_id\"; \r\n\r\n" + CHAT_ID + "\r\n--RandomNerdTutorials\r\nContent-Disposition: form-data; name=\"photo\"; filename=\"esp32-cam.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n";
 String tail = "\r\n--RandomNerdTutorials--\r\n";
@@ -95,6 +97,7 @@ Timeout Logic
 I implemented a 10-second timeout loop to handle responses from Telegram’s API, ensuring the device doesn't hang if the connection is slow.
 
 C++
+
 while ((startTimer + waitTime) > millis()){
   while (clientTCP.available()) {
     char c = clientTCP.read();
