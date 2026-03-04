@@ -5,23 +5,22 @@ ESP32-CAM Telegram Bot: remote control via Telegram. Features: capture photos, t
   Rui Santos
   Complete project details at https://RandomNerdTutorials.com/telegram-esp32-cam-photo-arduino/
   
- # IoT Security Lab: Remote Surveillance with ESP32-CAM & Telegram
+IoT Security Lab: Remote Surveillance with ESP32-CAM and Telegram
+Objective
+The goal of this project was to deploy a remote-controlled surveillance node using the ESP32-CAM and the Telegram Bot API. This lab demonstrates the implementation of remote command execution, manual HTTP POST request construction, and authorized access control in an IoT environment.
 
-##  Objective
-The goal of this project was to deploy a remote-controlled surveillance node using the **ESP32-CAM** and the **Telegram Bot API**. This lab demonstrates the implementation of remote command execution, manual HTTP POST request construction, and authorized access control in an IoT environment.
+Tools Used
+Hardware: ESP32-CAM (AI-Thinker module), FTDI USB-to-TTL Programmer.
 
-##  Tools Used
-* **Hardware:** ESP32-CAM (AI-Thinker module), FTDI USB-to-TTL Programmer.
-* **Software/APIs:** Arduino IDE, Telegram Bot API, `UniversalTelegramBot` & `ArduinoJson` libraries.
-* **Protocols:** WiFi (WPA2), TLS/SSL (HTTPS).
+Software/APIs: Arduino IDE, Telegram Bot API, UniversalTelegramBot and ArduinoJson libraries.
 
----
+Protocols: WiFi (WPA2), TLS/SSL (HTTPS).
 
-##  Technical Implementation
+Technical Implementation
+1. Authorization Logic (Chat ID Filtering)
+To ensure the camera only interacts with an authorized user, I implemented a filter that checks the incoming chat_id.
 
-### 1. Authorization Logic (Chat ID Filtering)
-To ensure the camera only interacts with an authorized user, I implemented a filter that checks the incoming `chat_id`.
-```cpp
+C++
 // Print the received message and handle logic
 String text = bot.messages[i].text;
 Serial.println(text);
@@ -43,8 +42,8 @@ if (text == "/photo") {
   sendPhoto = true;
   Serial.println("New photo request");
 }
-2. Manual HTTP POST & Image Streaming
-Instead of relying solely on a high-level library, I handled the manual construction of the multipart HTTP POST request to send image data to Telegram's servers. This demonstrates an understanding of how data is "chunked" and transmitted over TCP.
+2. Manual HTTP POST and Image Streaming
+Instead of relying solely on a high-level library, I handled the manual construction of the multipart HTTP POST request to send image data to Telegram's servers. This demonstrates an understanding of how data is chunked and transmitted over TCP.
 
 C++
 // Constructing the multipart/form-data request
@@ -72,15 +71,14 @@ for (size_t n=0; n<fbLen; n=n+1024) {
   }
 }  
 clientTCP.print(tail);
-
- Technical Reflections
+Technical Reflections
 Why I used WiFiClientSecure
 I utilized WiFiClientSecure to ensure all data is encrypted via TLS. This prevents unauthorized interception of the surveillance feed during transit.
 
 Buffer Management
-Handling image data on an IoT device requires careful memory management. I ensured esp_camera_fb_return(fb) was called immediately after transmission to free up the frame buffer and prevent "Memory Allocation" failures or brownouts.
+Handling image data on an IoT device requires careful memory management. I ensured esp_camera_fb_return(fb) was called immediately after transmission to free up the frame buffer and prevent Memory Allocation failures or brownouts.
 
- Real-World Application (SOC Perspective)
+Real-World Application (SOC Perspective)
 As a BCC Cybersecurity graduate, I recognize that unsecured IoT devices are prime targets for lateral movement within a network. This lab highlights:
 
 Access Control: Hardcoded Chat ID prevents unauthorized remote command execution.
@@ -89,10 +87,12 @@ Encrypted Transmission: Using port 443 (HTTPS) ensures confidentiality.
 
 Robust Logic: Manual chunking of data prevents packet loss during high-latency transmissions.
 
- Troubleshooting & Roadblocks
-Brownout Errors: Fixed by disabling the brownout detector via software.
+Troubleshooting and Roadblocks
+Brownout Errors
+Fixed by disabling the brownout detector via software. This was necessary because the camera's power draw during a WiFi burst often dropped the voltage below the default threshold.
 
-Timeout Logic: I implemented a 10-second timeout loop to handle responses from Telegram’s API, ensuring the device doesn't hang if the connection is slow.
+Timeout Logic
+I implemented a 10-second timeout loop to handle responses from Telegram’s API, ensuring the device doesn't hang if the connection is slow.
 
 C++
 while ((startTimer + waitTime) > millis()){
